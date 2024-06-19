@@ -67,6 +67,18 @@ func (e *RateLimitError) RetryAfter() time.Duration {
 }
 
 // Simulated request function
+
+/*
+This function simulates fetching data and randomly returns different types of errors:
+rand.Intn(4) generates a random number between 0 and 3.
+Depending on the random number, it either returns nil (no error) or a specific error type:
+0: No error.
+1: A temporary NetworkError.
+2: An InvalidResponseError.
+3: A RateLimitError with a 2-second retry duration.
+The default case returns a generic error.
+*/
+
 func fetchData() error {
 	// Simulating different error scenarios
 	switch rand.Intn(4) {
