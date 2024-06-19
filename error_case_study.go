@@ -131,3 +131,25 @@ func main() {
 
 	fmt.Println("Successfully fetched data.")
 }
+
+/*
+TYPE ASSERTION & TYPE SWITCH
+
+Type assertion in Go is a mechanism used to extract the underlying concrete value of a certain type from an interface.
+Interfaces in Go can hold values of any type. When we want to access a specific type from an interface, we use type assertion.
+
+A type switch is a specialized form of switch statement in Go that allows us to test types of interface values.
+It is particularly useful when we need to perform different actions based on the type of an interface value.
+
+EXAMPLE
+
+for _, shape := range shapes {
+		switch s := shape.(type) {
+		case Circle:
+			fmt.Printf("Circle with radius %.2f has area: %.2f\n", s.Radius, s.Area())
+		case Rectangle:
+			fmt.Printf("Rectangsle with width %.2f and height %.2f has area: %.2f\n", s.Width, s.Height, s.Area())
+		default:
+			fmt.Println("Unknown shape")
+
+*/
