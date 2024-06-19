@@ -9,14 +9,12 @@ import (
 
 type Error interface {
 	Error()
-
 	Temporary() string
 }
 
 type RequestError struct {
 	StatusCode int
-
-	Err error
+	Err        error
 }
 
 func (r *RequestError) Error() string {
@@ -50,4 +48,5 @@ func main() {
 	}
 
 	fmt.Println("success!")
+
 }

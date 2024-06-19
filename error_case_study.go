@@ -1,0 +1,118 @@
+package main
+
+import (
+	"errors"
+	"fmt"
+	"math/rand"
+	"os"
+	"time"
+)
+
+//CASE STUDY: Fetching Data from a Remote API
+
+/*
+Scenario
+
+You are building a Go program that fetches data from a remote API.
+The program needs to handle various types of errors, such as network issues, invalid responses, and rate limiting.
+Each error should be handled differently.
+
+Implementation
+
+Define Custom Error Types:
+We'll define custom error types to handle specific error scenarios.
+
+Implement the Request Function:
+This function will simulate making a network request and potentially returning different types of errors.
+
+Error Handling in main:
+The main function will handle these errors based on their type and properties.
+*/
+
+// Custom error type for network errors
+type NetworkError struct {
+	msg       string
+	temporary bool
+}
+
+func (e *NetworkError) Error() string {
+	return e.msg
+}
+
+func (e *NetworkError) Temporary() bool {
+	return e.temporary
+}
+
+// Custom error type for invalid responses
+type InvalidResponseError struct {
+	msg string
+}
+
+func (e *InvalidResponseError) Error() string {
+	return e.msg
+}
+
+// Custom error type for rate limiting
+type RateLimitError struct {
+	msg        string
+	retryAfter time.Duration
+}
+
+func (e *RateLimitError) Error() string {
+	return e.msg
+}
+
+func (e *RateLimitError) RetryAfter() time.Duration {
+	return e.retryAfter
+}
+
+// Simulated request function
+func fetchData() error {
+	// Simulating different error scenarios
+	switch rand.Intn(4) {
+	case 0:
+		return nil
+	case 1:
+		return &NetworkError{msg: "Network timeout", temporary: true}
+	case 2:
+		return &InvalidResponseError{msg: "Invalid response format"}
+	case 3:
+		return &RateLimitError{msg: "Rate limit exceeded", retryAfter: 2 * time.Second}
+	default:
+		return errors.New("unknown error")
+	}
+}
+
+func main() {
+	rand.Seed(time.Now().UnixNano())
+	err := fetchData()
+	if err != nil {
+		fmt.Println("Error:", err)
+
+		switch e := err.(type) {
+		case *NetworkError:
+			if e.Temporary() {
+				fmt.Println("This is a temporary network error. Please try again.")
+			} else {
+				fmt.Println("This is a permanent network error. Please check your connection.")
+			}
+		case *InvalidResponseError:
+			fmt.Println("The response from the server was invalid. Please contact support.")
+		case *RateLimitError:
+			fmt.Printf("Rate limit exceeded. Retry after %v seconds.\n", e.RetryAfter().Seconds())
+			time.Sleep(e.RetryAfter())
+			// Retry fetching data
+			err = fetchData()
+			if err != nil {
+				fmt.Println("Error on retry:", err)
+				os.Exit(1)
+			}
+			fmt.Println("Successfully fetched data on retry.")
+		default:
+			fmt.Println("An unknown error occurred.")
+		}
+		os.Exit(1)
+	}
+
+	fmt.Println("Successfully fetched data.")
+}
