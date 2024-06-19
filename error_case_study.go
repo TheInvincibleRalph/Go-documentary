@@ -103,6 +103,7 @@ func main() {
 	if err != nil {
 		fmt.Println("Error:", err)
 
+		//TYPE SWITCH
 		switch e := err.(type) {
 		case *NetworkError:
 			if e.Temporary() {
