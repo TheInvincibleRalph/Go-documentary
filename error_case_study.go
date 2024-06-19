@@ -27,6 +27,8 @@ This function will simulate making a network request and potentially returning d
 
 Error Handling in main:
 The main function will handle these errors based on their type and properties.
+
+This code provides a robust error-handling mechanism, ensuring different types of errors are appropriately managed and communicated to the user.
 */
 
 // Custom error type for network errors
@@ -97,7 +99,7 @@ func fetchData() error {
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	err := fetchData()
+	err := fetchData() //This line calls fetchData and stores the returned error (if any) in the variable err.
 	if err != nil {
 		fmt.Println("Error:", err)
 
