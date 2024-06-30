@@ -16,7 +16,7 @@ func main() {
 
 	}
 
-	//modifies the request
+	//modifies the query
 	q := req.URL.Query()          //extracts the query parameters from the URL
 	q.Add("sku", "How are you?")  //adds a query parameter 'sku' with the value 'ABC123'
 	req.URL.RawQuery = q.Encode() //encodes the query parameters back into the URL
